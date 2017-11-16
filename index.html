@@ -61,16 +61,26 @@
             methods: {
                 submitForm: function () {
                     if (this.validateInput(this.name) && this.validateInput(this.eMail)) {
-                        console.log('OK')
+                        this.errorMessageAll = '',
+                        this.errorMessageEMail = '',
+                        this.errorMessageName = '',
+                        this.nameInputError = false,
+                        this.eMailInputError = false
                     } else if (this.validateInput(this.eMail) === false && this.validateInput(this.name) === false) {
                         this.errorMessageAll = 'Пожалуйста, заполните форму',
                         this.nameInputError = true,
                         this.eMailInputError = true                    
                     } else if (this.validateInput(this.name) === false) {
                         this.errorMessageName = 'Пожалуйста, введите Ваше имя',
+                        this.errorMessageEMail = '',
+                        this.errorMessageAll = '',
+                        this.eMailInputError = false,
                         this.nameInputError = true
                     } else {
                         this.errorMessageEMail = 'Пожалуйста, введите Ваш e-mail',
+                        this.errorMessageName = '',
+                        this.errorMessageAll = '',
+                        this.nameInputError = false,
                         this.eMailInputError = true                    
                     }
                 },
