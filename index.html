@@ -5,6 +5,20 @@
     <title>VUE</title>
     <script src="https://unpkg.com/vue"></script>
 
+    <style>
+        .form__text {
+            margin: 10px 0
+        }
+        .active {
+            border: 2px solid red
+        }
+        .error-message {
+            color: red;
+            font-size: 11px;
+            margin: 10px 0
+        }
+    </style>
+
 </head>
 
 <body>
@@ -12,19 +26,22 @@
     <div class="form" id="form">
         <div class="form__wrapper">
 
-            <div class="form__text">Имя:<br>
-                <input class="input" v-model="name" type="text" size="40" required>
+            <div class="form__text">
+                Имя:<br>
+                <div class="error-message">{{ errorMessageName }}</div>
+                <input class="input" v-bind:class="{ active: nameInputError }" v-model="name" type="text" size="40" required>
             </div>
-            <div class="form__text">E-mail:<br>
-                <input class="input" v-model="eMail" type="text" size="40" required>
+            <div class="form__text">
+                E-mail:<br>
+                <div class="error-message">{{ errorMessageEMail }}</div>
+                <input class="input" v-bind:class="{ active: eMailInputError }" v-model="eMail" type="text" size="40" required>
             </div>
             <br>
             <button class="form__button" v-on:click="submitForm" type="submit" id="form-button">
                 Отправить
             </button>
             <br>
-            <br>
-            <div class="error-message">{{ errorMessage }}</div>
+            <div class="error-message">{{ errorMessageAll }}</div> <br>
             
         </div>
     </div>
@@ -33,20 +50,28 @@
         var form = new Vue({
             el: '#form',
             data: {
-                errorMessage: '',
+                errorMessageAll: '',
+                errorMessageName: '',
+                errorMessageEMail: '',                
                 name:  '',
-                eMail: ''
+                eMail: '',
+                nameInputError: false,
+                eMailInputError: false                
             },
             methods: {
                 submitForm: function () {
                     if (this.validateInput(this.name) && this.validateInput(this.eMail)) {
                         console.log('OK')
                     } else if (this.validateInput(this.eMail) === false && this.validateInput(this.name) === false) {
-                        this.errorMessage = 'Пожалуйста, заполните форму'                        
+                        this.errorMessageAll = 'Пожалуйста, заполните форму',
+                        this.nameInputError = true,
+                        this.eMailInputError = true                    
                     } else if (this.validateInput(this.name) === false) {
-                        this.errorMessage = 'Пожалуйста, введите Ваше имя'
+                        this.errorMessageName = 'Пожалуйста, введите Ваше имя',
+                        this.nameInputError = true
                     } else {
-                        this.errorMessage = 'Пожалуйста, введите Ваш e-mail'
+                        this.errorMessageEMail = 'Пожалуйста, введите Ваш e-mail',
+                        this.eMailInputError = true                    
                     }
                 },
                 validateInput: function (value) {
@@ -54,7 +79,6 @@
                 }
             },
         });
-
     </script>
 
 </body>
