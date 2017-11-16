@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>VUE</title>
+    <script src="https://unpkg.com/vue"></script>
+
+</head>
+
+<body>
+
+    <div class="form" id="form">
+        <div class="form__wrapper">
+
+            <div class="form__text">Имя:<br>
+                <input class="input" v-model="name" type="text" size="40" required>
+            </div>
+            <div class="form__text">E-mail:<br>
+                <input class="input" v-model="eMail" type="text" size="40" required>
+            </div>
+            <br>
+            <button class="form__button" v-on:click="submitForm" type="submit" id="form-button">
+                Отправить
+            </button>
+            <br>
+            <br>
+            <div class="error-message">{{ errorMessage }}</div>
+            
+        </div>
+    </div>
+
+    <script>
+        var form = new Vue({
+            el: '#form',
+            data: {
+                errorMessage: '',
+                name:  '',
+                eMail: ''
+            },
+            methods: {
+                submitForm: function () {
+                    if (this.validateInput(this.name) && this.validateInput(this.eMail)) {
+                        console.log('OK')
+                    } else if (this.validateInput(this.eMail) === false && this.validateInput(this.name) === false) {
+                        this.errorMessage = 'Пожалуйста, заполните форму'                        
+                    } else if (this.validateInput(this.name) === false) {
+                        this.errorMessage = 'Пожалуйста, введите Ваше имя'
+                    } else {
+                        this.errorMessage = 'Пожалуйста, введите Ваш e-mail'
+                    }
+                },
+                validateInput: function (value) {
+                    return value !== ''
+                }
+            },
+        });
+
+    </script>
+
+</body>
+</html>
