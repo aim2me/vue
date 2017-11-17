@@ -27,22 +27,50 @@
         <div class="form__wrapper">
 
             <div class="form__text">
-                Имя:<br>
-                <div class="error-message">{{ errorMessageName }}</div>
-                <input class="input" v-bind:class="{ active: nameInputError }" v-model="name" type="text" size="40" required>
+                <div v-if="!validName" class="error-message">Пожалуйста, введите Ваше имя</div>
+                <label for="name">Имя:</label>
+                <input 
+                    id="name" 
+                    class="input" 
+                    v-bind:class="{ active: !validName }" 
+                    v-model="name" 
+                    type="text" 
+                    size="40" 
+                    required
+                >
             </div>
             <div class="form__text">
-                E-mail:<br>
-                <div class="error-message">{{ errorMessageEMail }}</div>
-                <input class="input" v-bind:class="{ active: eMailInputError }" v-model="eMail" type="text" size="40" required>
+                <div v-if="!validMail" class="error-message">Пожалуйста, введите Ваш e-mail</div>
+                <label for="email">E-mail:</label>
+                <input 
+                    id="mail" 
+                    class="input" 
+                    v-bind:class="{ active: !validMail }" 
+                    v-model="eMail" 
+                    type="text" 
+                    size="40" 
+                    required
+                >
             </div>
+            <div class="form__text">
+                <div v-if="!validAge" class="error-message">Пожалуйста, введите Ваш возраст</div>
+                <label for="age">Возраст:</label>
+                <input 
+                    id="age" 
+                    class="input" 
+                    v-bind:class="{ active: !validAge }" 
+                    v-model="age" 
+                    type="text" 
+                    size="40" 
+                    required
+                >
+            </div>
+            <div v-if="seen" class="error-message">Пожалуйста, заполните форму</div>
             <br>
             <button class="form__button" v-on:click="submitForm" type="submit" id="form-button">
                 Отправить
             </button>
             <br>
-            <div class="error-message">{{ errorMessageAll }}</div> <br>
-            
         </div>
     </div>
 
@@ -50,44 +78,56 @@
         var form = new Vue({
             el: '#form',
             data: {
-                errorMessageAll: '',
-                errorMessageName: '',
-                errorMessageEMail: '',                
                 name:  '',
                 eMail: '',
-                nameInputError: false,
-                eMailInputError: false                
+                age: '',
+                firstView: true,
+                seen: false
             },
             methods: {
                 submitForm: function () {
-                    if (this.validateInput(this.name) && this.validateInput(this.eMail)) {
-                        this.errorMessageAll = '',
-                        this.errorMessageEMail = '',
-                        this.errorMessageName = '',
-                        this.nameInputError = false,
-                        this.eMailInputError = false
-                    } else if (this.validateInput(this.eMail) === false && this.validateInput(this.name) === false) {
-                        this.errorMessageAll = 'Пожалуйста, заполните форму',
-                        this.nameInputError = true,
-                        this.eMailInputError = true                    
-                    } else if (this.validateInput(this.name) === false) {
-                        this.errorMessageName = 'Пожалуйста, введите Ваше имя',
-                        this.errorMessageEMail = '',
-                        this.errorMessageAll = '',
-                        this.eMailInputError = false,
-                        this.nameInputError = true
-                    } else {
-                        this.errorMessageEMail = 'Пожалуйста, введите Ваш e-mail',
-                        this.errorMessageName = '',
-                        this.errorMessageAll = '',
-                        this.nameInputError = false,
-                        this.eMailInputError = true                    
+                    this.firstView = false;
+                    if (this.validName && this.validMail && this.validAge) {
+                        console.log('Ok');
+                        return
+                    } else if (!this.validName && !this.validMail && !this.validAge) {
+                        this.seen = true,
+                        this.name = null,
+                        this.eMail = null,
+                        this.age = null                        
                     }
-                },
-                validateInput: function (value) {
-                    return value !== ''
                 }
             },
+            computed: {
+                validName: function () {
+                    if (!this.firstView) {
+                        return this.name !== ''
+                    } else {
+                        return true
+                    }
+                },
+                validMail: function () {
+                    if (!this.firstView) {
+                        return this.eMail !== ''
+                    } else {
+                        return true
+                    }
+                },
+                validAge: function () {
+                    if (!this.firstView) {
+                        return this.age !== ''
+                    } else {
+                        return true
+                    }
+                }
+                // validAll: function () {
+                //     if (!this.firstView) {
+                //         return this.eMail !== ''
+                //     } else {
+                //         return true
+                //     }
+                // }
+            }
         });
     </script>
 
