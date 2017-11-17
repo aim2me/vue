@@ -65,7 +65,7 @@
                     required
                 >
             </div>
-            <div v-if="seen" class="error-message">Пожалуйста, заполните форму</div>
+            <div v-show="!validName && !validMail && !validAge" class="error-message">Пожалуйста, заполните форму</div>
             <br>
             <button class="form__button" v-on:click="submitForm" type="submit" id="form-button">
                 Отправить
@@ -73,7 +73,6 @@
             <br>
         </div>
     </div>
-
     <script>
         var form = new Vue({
             el: '#form',
@@ -81,8 +80,7 @@
                 name:  '',
                 eMail: '',
                 age: '',
-                firstView: true,
-                seen: false
+                firstView: true
             },
             methods: {
                 submitForm: function () {
@@ -90,12 +88,7 @@
                     if (this.validName && this.validMail && this.validAge) {
                         console.log('Ok');
                         return
-                    } else if (!this.validName && !this.validMail && !this.validAge) {
-                        this.seen = true,
-                        this.name = null,
-                        this.eMail = null,
-                        this.age = null                        
-                    }
+                    } 
                 }
             },
             computed: {
@@ -120,13 +113,6 @@
                         return true
                     }
                 }
-                // validAll: function () {
-                //     if (!this.firstView) {
-                //         return this.eMail !== ''
-                //     } else {
-                //         return true
-                //     }
-                // }
             }
         });
     </script>
