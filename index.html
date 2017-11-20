@@ -12,11 +12,14 @@
 
 <body>
 
+
+    <header></header>
+    
     <div id="product-list">
         <product-item
             v-for="item in productList"
-            v-bind:key="item.id"
-            v-bind:title="item.title"
+            :key="item.id"
+            :item-data="item"
         ></product-item>
     </div>
 
@@ -25,13 +28,12 @@
         Vue.component('product-item', {
             template: '\
                     <li>\
-                    <a v-bind:href="link">\
-                    {{ title }}\
-                    </a>\
-                    <img v-bind:url="pic">\
+                    {{ itemData.title }}\
+                    <img :src="itemData.pic">\
+                    <a :href="itemData.link">{{ itemData.link }}</a>\
                     </li>\
                     ',
-            props: ['title', 'pic', 'link'] // взять вводные данные из родительского (!) компонента
+            props: ['itemData'] // взять вводные данные из родительского (!) компонента
         });
 
         new Vue ({
@@ -47,13 +49,13 @@
                     {
                         id: 2,
                         title: 'Jinga Simple F315',
-                        pic: 'Jinga Simple F315.jpg',
+                        pic: 'pics/Jinga Simple F315.jpg',
                         link: 'https://market.yandex.ru/product/13623394?show-uid=111646259028863319816002&nid=54726&context=search'
                     },
                     {
                         id: 3,
                         title: 'Philips S386',
-                        pic: 'Philips S386.jpg',
+                        pic: 'pics/Philips S386.jpg',
                         link: 'https://market.yandex.ru/product/1729159126?show-uid=111646259028863319816003&nid=54726&context=search'
                     }
                 ]
