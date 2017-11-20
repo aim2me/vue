@@ -6,115 +6,60 @@
     <script src="https://unpkg.com/vue"></script>
 
     <style>
-        .form__text {
-            margin: 10px 0
-        }
-        .active {
-            border: 2px solid red
-        }
-        .error-message {
-            color: red;
-            font-size: 11px;
-            margin: 10px 0
-        }
     </style>
 
 </head>
 
 <body>
 
-    <div class="form" id="form">
-        <div class="form__wrapper">
-
-            <div class="form__text">
-                <div v-if="!validName" class="error-message">Пожалуйста, введите Ваше имя</div>
-                <label for="name">Имя:</label>
-                <input 
-                    id="name" 
-                    class="input" 
-                    v-bind:class="{ active: !validName }" 
-                    v-model="name" 
-                    type="text" 
-                    size="40" 
-                    required
-                >
-            </div>
-            <div class="form__text">
-                <div v-if="!validMail" class="error-message">Пожалуйста, введите Ваш e-mail</div>
-                <label for="email">E-mail:</label>
-                <input 
-                    id="mail" 
-                    class="input" 
-                    v-bind:class="{ active: !validMail }" 
-                    v-model="eMail" 
-                    type="text" 
-                    size="40" 
-                    required
-                >
-            </div>
-            <div class="form__text">
-                <div v-if="!validAge" class="error-message">Пожалуйста, введите Ваш возраст</div>
-                <label for="age">Возраст:</label>
-                <input 
-                    id="age" 
-                    class="input" 
-                    v-bind:class="{ active: !validAge }" 
-                    v-model="age" 
-                    type="text" 
-                    size="40" 
-                    required
-                >
-            </div>
-            <div v-show="!validName && !validMail && !validAge" class="error-message">Пожалуйста, заполните форму</div>
-            <br>
-            <button class="form__button" v-on:click="submitForm" type="submit" id="form-button">
-                Отправить
-            </button>
-            <br>
-        </div>
+    <div id="product-list">
+        <product-item
+            v-for="item in productList"
+            v-bind:key="item.id"
+            v-bind:title="item.title"
+        ></product-item>
     </div>
+
     <script>
-        var form = new Vue({
-            el: '#form',
-            data: {
-                name:  '',
-                eMail: '',
-                age: '',
-                firstView: true
-            },
-            methods: {
-                submitForm: function () {
-                    this.firstView = false;
-                    if (this.validName && this.validMail && this.validAge) {
-                        console.log('Ok');
-                        return
-                    } 
-                }
-            },
-            computed: {
-                validName: function () {
-                    if (!this.firstView) {
-                        return this.name !== ''
-                    } else {
-                        return true
-                    }
-                },
-                validMail: function () {
-                    if (!this.firstView) {
-                        return this.eMail !== ''
-                    } else {
-                        return true
-                    }
-                },
-                validAge: function () {
-                    if (!this.firstView) {
-                        return this.age !== ''
-                    } else {
-                        return true
-                    }
-                }
-            }
+
+        Vue.component('product-item', {
+            template: '\
+                    <li>\
+                    <a v-bind:href="link">\
+                    {{ title }}\
+                    </a>\
+                    <img v-bind:url="pic">\
+                    </li>\
+                    ',
+            props: ['title', 'pic', 'link'] // взять вводные данные из родительского (!) компонента
         });
+
+        new Vue ({
+            el: '#product-list',
+            data: {
+                productList: [
+                    {
+                        id: 1,
+                        title: 'Gretel A7',
+                        pic: 'pics/Gretel A7.jpg',
+                        link: 'https://market.yandex.ru/product/1725613811?show-uid=111646259028863319816001&nid=54726&context=search'
+                    },
+                    {
+                        id: 2,
+                        title: 'Jinga Simple F315',
+                        pic: 'Jinga Simple F315.jpg',
+                        link: 'https://market.yandex.ru/product/13623394?show-uid=111646259028863319816002&nid=54726&context=search'
+                    },
+                    {
+                        id: 3,
+                        title: 'Philips S386',
+                        pic: 'Philips S386.jpg',
+                        link: 'https://market.yandex.ru/product/1729159126?show-uid=111646259028863319816003&nid=54726&context=search'
+                    }
+                ]
+            },
+        })
+
     </script>
 
 </body>
