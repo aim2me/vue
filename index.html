@@ -6,38 +6,68 @@
     <script src="https://unpkg.com/vue"></script>
 
     <style>
+        .list-item {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            margin: 30px 0;
+        }
     </style>
 
 </head>
 
 <body>
+    <div id="app">
 
+        <counter :counter="dataCounter"></counter>
 
-    <header></header>
-    
-    <div id="product-list">
         <product-item
             v-for="item in productList"
             :key="item.id"
             :item-data="item"
+            v-on:increment="addProduct"
+            v-on:decrement="delProduct"
         ></product-item>
+
     </div>
+
 
     <script>
 
+        Vue.component('counter', {
+            template: '\
+            <button>\
+                {{ counter }}\
+            </button>\
+            ',
+            props: [ 'counter' ]
+        });
+
         Vue.component('product-item', {
             template: '\
-                    <li>\
+                    <li class="list-item">\
                     {{ itemData.title }}\
                     <img :src="itemData.pic">\
                     <a :href="itemData.link">{{ itemData.link }}</a>\
+                    <button v-on:click="countCounter">Add me</button>\
+                    <button v-on:click="deleteCounter">Delete me</button>\
                     </li>\
                     ',
-            props: ['itemData'] // взять вводные данные из родительского (!) компонента
+            props: ['itemData'],
+            methods: {
+                countCounter: function () {
+                    this.$emit('increment'),
+                    console.log('inc')
+                },
+                deleteCounter: function () {
+                    this.$emit('decrement'),
+                    console.log('dec')
+                }
+            }
         });
 
         new Vue ({
-            el: '#product-list',
+            el: '#app',
             data: {
                 productList: [
                     {
@@ -58,8 +88,18 @@
                         pic: 'pics/Philips S386.jpg',
                         link: 'https://market.yandex.ru/product/1729159126?show-uid=111646259028863319816003&nid=54726&context=search'
                     }
-                ]
+                ],
+                dataCounter: 0,
+                firstClick: true
             },
+            methods: {
+                addProduct: function () {
+                    this.dataCounter += 1
+                },
+                delProduct: function () {
+                    this.dataCounter -= 1
+                }
+            }
         })
 
     </script>
